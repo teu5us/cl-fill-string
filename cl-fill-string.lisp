@@ -34,14 +34,16 @@
     (values end finished)))
 
 (defun nfill-string (string column &optional (start 0))
-  (multiple-value-bind (end finished) (find-space string column start)
-    (if finished
-        string
-        (fill-string (progn
-                       (setf (char string end) #\newline)
-                       string)
-                     column
-                     (1+ end)))))
+  (if (eql column 0)
+      string
+      (multiple-value-bind (end finished) (find-space string column start)
+        (if finished
+            string
+            (fill-string (progn
+                           (setf (char string end) #\newline)
+                           string)
+                         column
+                         (1+ end))))))
 
 (defun fill-string (string column &optional (start 0))
   (let ((str (copy-seq string)))
